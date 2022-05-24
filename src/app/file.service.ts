@@ -10,7 +10,7 @@ export class FileService {
     getChildren(params: any): Observable<Object> {
         return this.http.get("/api/fileexplorer/object", 
         { 
-            params: { 
+            params: {
                 folderId: params.folderId
             } 
         });
