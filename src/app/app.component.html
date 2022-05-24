@@ -4,7 +4,7 @@
     </nav>
     <div class="explorer">
         <aside>
-
+            <p-tree [value]="treeNodes" (onNodeExpand)="onFolderExpanded($event)"></p-tree>
         </aside>
         <section>
 
