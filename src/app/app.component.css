@@ -26,21 +26,25 @@ section {
     float: right;
     border: 1px solid blue;
     margin: 0 1.5%;
-    width: 79%;
+    width: 78%;
     height: 100%;
 }
 
 aside {
     float: left;
     border: 1px solid black;
-    width: 18%;
+    width: 19%;
     height: 100%;
+}
+
+.tree-toolbox {
+    padding: 10px;
 }
 
 .explorer-tree {
     height: 90%;
 }
 
-.tree-buttons {
-    margin-right: 5px;
+#create-folder-button {
+    margin-right: 10px;
 }
