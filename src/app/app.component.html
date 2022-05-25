@@ -10,8 +10,8 @@
             <p-button (onClick)="onMoveFolder($event)" class="tree-buttons" label="Move folder" icon="pi pi-arrow-down-right" [disabled]="true"></p-button>
             <p-tree class="explorer-tree" [value]="treeNodes" selectionMode="single" [(selection)]="selectedNode" (onNodeExpand)="onFolderExpanded($event)">
                 <ng-template let-node pTemplate="default">
-                    <input (keydown)="onTreeInput($event)" *ngIf="node.data.editing" [(ngModel)]="node.label" type="text" style="width:100%">
-                    <span *ngIf="!node.data.editing">{{node.label}}</span>
+                    <input (keydown)="onTreeInput($event, node)" *ngIf="node.data && node.data.editing" [(ngModel)]="node.label" type="text" style="width:100%">
+                    <span *ngIf="node.data && !node.data.editing">{{node.label}}</span>
                 </ng-template>
             </p-tree>
         </aside>

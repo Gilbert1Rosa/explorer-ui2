@@ -50,7 +50,6 @@ export class AppComponent {
         name: event.files[0].name,
         parent: this.selectedNode.data.id
       }).subscribe(response => {
-        // TODO: Show message if success === true
         this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
       });
     }
@@ -82,18 +81,16 @@ export class AppComponent {
     }
   }
 
-  onCreateFolder(event: any) {
-    const name = "";
-    if (this.selectedNode.data) {
-      this.fileService.createFolder(name, 0, this.selectedNode.data.id)
-      .subscribe(response => {
-        // TODO: Show message if success === true
-      });
+  onTreeInput(event: any, treeNode: TreeNode<StorageObject>) {
+    if (event.code === "Enter" && treeNode.data && treeNode.label) {
+      const name = treeNode.label;
+      if (this.selectedNode.parent && this.selectedNode.parent.data) {
+        this.fileService.createFolder(name, 0, this.selectedNode.parent.data.id)
+        .subscribe(response => {
+          this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
+        });
+      }
     }
-  }
-
-  onTreeInput(event: any) {
-
   }
 
   onMoveFolder(event: any) {
