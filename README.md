@@ -2,6 +2,29 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.
 
+## Configuring proxy
+
+Proxy file is located on src/proxy.conf.json:
+
+<pre>
+    <code>
+        {
+            "/api": {
+            "target": "http://localhost:8080",
+            "secure": false,
+            "logLevel": "debug",
+            "pathRewrite": {
+                "^/api": ""
+            }
+            }
+        }
+    </code>
+</pre>
+
+<br>
+
+The "target" should be changed to the host and port where is deployed the backend project: https://github.com/Gilbert1Rosa/foldersystem-backend
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
