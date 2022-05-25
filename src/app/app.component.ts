@@ -31,7 +31,6 @@ export class AppComponent {
   }
 
   onFolderExpanded(event: any) {
-    console.log(event);
     this.fileService.getChildren({ folderId: event.node.data.id })
     .subscribe((elements: any) => {
       event.node.children = TreeHelper.getTreeNodes(elements.children);
@@ -43,7 +42,6 @@ export class AppComponent {
   }
 
   uploader(event: any) {
-    console.log(event);
     if (this.selectedNode.data && this.selectedNode.data.objectType === 0) {
       this.fileService.upload({
         content: event.files[0],
@@ -90,6 +88,21 @@ export class AppComponent {
           this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
         });
       }
+    }
+  }
+
+  onNodeSelected() {
+    if (this.selectedNode && this.selectedNode.data && this.selectedNode.data.objectType === 0) {
+      let currentNode = this.selectedNode;
+      let path = "";
+      while (currentNode.data && currentNode.data.id !== this.ROOT_DEFAULT_ID) {
+          path = `/${currentNode.data.objectName}${path}`;
+          if (!currentNode.parent) {
+            break;
+          }
+          currentNode = currentNode.parent
+      }
+      this.path = path;
     }
   }
 
