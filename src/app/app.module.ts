@@ -8,6 +8,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { TreeModule } from 'primeng/tree';
 import { HttpClientModule } from '@angular/common/http';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadModule } from 'primeng/fileupload';
 
 import { FileService } from './file.service';
 
@@ -21,6 +24,9 @@ import { FileService } from './file.service';
     InputTextModule,
     TreeModule,
     HttpClientModule,
+    ButtonModule,
+    DialogModule,
+    FileUploadModule,
     FormsModule
   ],
   providers: [

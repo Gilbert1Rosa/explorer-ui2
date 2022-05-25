@@ -1,13 +1,25 @@
 <main>
     <nav class="path-bar">
         <input class="path-input" type="text" pInputText [(ngModel)]="path">
+        <p-button (onClick)="onDownload($event)" icon="pi pi-download"></p-button>
+        <p-button (onClick)="onUpload($event)" icon="pi pi-upload" class="p-button-danger"></p-button>
     </nav>
     <div class="explorer">
         <aside>
-            <p-tree [value]="treeNodes" (onNodeExpand)="onFolderExpanded($event)"></p-tree>
+            <p-button (onClick)="onCreateFolderClicked($event)" class="tree-buttons" label="Create folder" icon="pi pi-plus"></p-button>
+            <p-button (onClick)="onMoveFolder($event)" class="tree-buttons" label="Move folder" icon="pi pi-arrow-down-right" [disabled]="true"></p-button>
+            <p-tree class="explorer-tree" [value]="treeNodes" selectionMode="single" [(selection)]="selectedNode" (onNodeExpand)="onFolderExpanded($event)">
+                <ng-template let-node pTemplate="default">
+                    <input (keydown)="onTreeInput($event)" *ngIf="node.data.editing" [(ngModel)]="node.label" type="text" style="width:100%">
+                    <span *ngIf="!node.data.editing">{{node.label}}</span>
+                </ng-template>
+            </p-tree>
         </aside>
         <section>
 
         </section>
     </div>
+    <p-dialog header="Upload file" [(visible)]="uploadDialogVisible" [style]="{width: '50vw'}">
+        <p-fileUpload name="files[]" [multiple]="false" [customUpload]="true" (uploadHandler)="uploader($event)"></p-fileUpload>
+    </p-dialog>
 </main>

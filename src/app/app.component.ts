@@ -13,8 +13,9 @@ import { TreeHelper } from './helper/tree.helper';
 export class AppComponent {
   ROOT_DEFAULT_ID: number = 1;
   path = "";
-  title = 'explorer-ui2';
   treeNodes: TreeNode<StorageObject>[] = [];
+  selectedNode: TreeNode<StorageObject> = {};
+  uploadDialogVisible = false;
 
   constructor(private fileService: FileService) {}
 
@@ -35,6 +36,67 @@ export class AppComponent {
     .subscribe((elements: any) => {
       event.node.children = TreeHelper.getTreeNodes(elements.children);
     });
+  }
+
+  onUpload(event: any) {
+    this.uploadDialogVisible = true;
+  }
+
+  uploader(event: any) {
+    console.log(event);
+    if (this.selectedNode.data && this.selectedNode.data.objectType === 0) {
+      this.fileService.upload({
+        content: event.files[0],
+        name: event.files[0].name,
+        parent: this.selectedNode.data.id
+      }).subscribe(response => {
+        // TODO: Show message if success === true
+        this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
+      });
+    }
+  }
+
+  onDownload(event: any) {
+    if (this.selectedNode.data) {
+      const storageObject: StorageObject = this.selectedNode.data;
+      this.fileService.download(storageObject.id)
+      .subscribe(blob => {
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(blob)
+        a.href = objectUrl
+        a.download = storageObject.objectName;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      });
+    }
+  }
+
+  onCreateFolderClicked(event: any) {
+    if (this.selectedNode.data && this.selectedNode.children) {
+      this.selectedNode.children = [...this.selectedNode.children, TreeHelper.getEditingTreeNode({
+        id: 0,
+        objectName: "",
+        objectType: 0,
+        parent: this.selectedNode.data.id
+      })];
+    }
+  }
+
+  onCreateFolder(event: any) {
+    const name = "";
+    if (this.selectedNode.data) {
+      this.fileService.createFolder(name, 0, this.selectedNode.data.id)
+      .subscribe(response => {
+        // TODO: Show message if success === true
+      });
+    }
+  }
+
+  onTreeInput(event: any) {
+
+  }
+
+  onMoveFolder(event: any) {
   }
 
   ngOnDestroy() {
