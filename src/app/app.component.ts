@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FileService } from './file.service';
 
-import { TreeNode } from 'primeng/api';
+import { MenuItem, TreeNode } from 'primeng/api';
 import { StorageObject } from './model/storage-object.model';
 import { TreeHelper } from './helper/tree.helper';
 
@@ -16,6 +16,7 @@ export class AppComponent {
   treeNodes: TreeNode<StorageObject>[] = [];
   selectedNode: TreeNode<StorageObject> = {};
   uploadDialogVisible = false;
+  directionBarItems: MenuItem[] = [];
 
   constructor(private fileService: FileService) {}
 
@@ -94,15 +95,15 @@ export class AppComponent {
   onNodeSelected() {
     if (this.selectedNode && this.selectedNode.data && this.selectedNode.data.objectType === 0) {
       let currentNode = this.selectedNode;
-      let path = "";
+      let items: MenuItem[] = [];
       while (currentNode.data && currentNode.data.id !== this.ROOT_DEFAULT_ID) {
-          path = `/${currentNode.data.objectName}${path}`;
+          items.push({ label: currentNode.data.objectName });
           if (!currentNode.parent) {
             break;
           }
           currentNode = currentNode.parent
       }
-      this.path = path;
+      this.directionBarItems = items.reverse();
     }
   }
 

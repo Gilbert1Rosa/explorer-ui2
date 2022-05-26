@@ -11,12 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 import { FileService } from './file.service';
+import { FolderTreeComponent } from './components/folder-tree/folder-tree.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FolderTreeComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +30,7 @@ import { FileService } from './file.service';
     ButtonModule,
     DialogModule,
     FileUploadModule,
+    BreadcrumbModule,
     FormsModule
   ],
   providers: [

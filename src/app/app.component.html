@@ -1,6 +1,6 @@
 <main>
     <nav class="path-bar">
-        <input class="path-input" type="text" pInputText [(ngModel)]="path">
+        <p-breadcrumb class="path-input" [model]="directionBarItems"></p-breadcrumb>
         <p-button (onClick)="onDownload($event)" icon="pi pi-download"></p-button>
         <p-button (onClick)="onUpload($event)" icon="pi pi-upload" class="p-button-danger"></p-button>
     </nav>
