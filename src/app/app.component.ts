@@ -12,8 +12,7 @@ import { TreeHelper } from './helper/tree.helper';
 })
 export class AppComponent {
   ROOT_DEFAULT_ID: number = 1;
-  path = "";
-  treeNodes: TreeNode<StorageObject>[] = [];
+  objects: StorageObject[] = [];
   selectedNode: TreeNode<StorageObject> = {};
   uploadDialogVisible = false;
   directionBarItems: MenuItem[] = [];
@@ -21,23 +20,16 @@ export class AppComponent {
   constructor(private fileService: FileService) {}
 
   ngOnInit() {
-    this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
+    this.loadObjects(this.ROOT_DEFAULT_ID);
   }
 
-  loadFolderTreeView(folderId: number) {
-    this.fileService.getChildren({ folderId: folderId })
-    .subscribe((elements: any) => {
-      this.treeNodes = TreeHelper.getTreeNodes(elements.children);
-    });
+  loadObjects(folderId: number) {
+      this.fileService.getChildren({ folderId: folderId })
+      .subscribe((elements: any) => {
+        this.objects = elements.children;
+      });
   }
-
-  onFolderExpanded(event: any) {
-    this.fileService.getChildren({ folderId: event.node.data.id })
-    .subscribe((elements: any) => {
-      event.node.children = TreeHelper.getTreeNodes(elements.children);
-    });
-  }
-
+  
   onUpload(event: any) {
     this.uploadDialogVisible = true;
   }
@@ -49,7 +41,7 @@ export class AppComponent {
         name: event.files[0].name,
         parent: this.selectedNode.data.id
       }).subscribe(response => {
-        this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
+        // this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
       });
     }
   }
@@ -66,29 +58,6 @@ export class AppComponent {
         a.click();
         URL.revokeObjectURL(objectUrl);
       });
-    }
-  }
-
-  onCreateFolderClicked(event: any) {
-    if (this.selectedNode.data && this.selectedNode.children) {
-      this.selectedNode.children = [...this.selectedNode.children, TreeHelper.getEditingTreeNode({
-        id: 0,
-        objectName: "",
-        objectType: 0,
-        parent: this.selectedNode.data.id
-      })];
-    }
-  }
-
-  onTreeInput(event: any, treeNode: TreeNode<StorageObject>) {
-    if (event.code === "Enter" && treeNode.data && treeNode.label) {
-      const name = treeNode.label;
-      if (this.selectedNode.parent && this.selectedNode.parent.data) {
-        this.fileService.createFolder(name, 0, this.selectedNode.parent.data.id)
-        .subscribe(response => {
-          this.loadFolderTreeView(this.ROOT_DEFAULT_ID);
-        });
-      }
     }
   }
 
